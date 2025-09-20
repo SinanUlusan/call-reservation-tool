@@ -17,9 +17,16 @@ async function bootstrap() {
 
   // Enable CORS for frontend integration
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    git add .    origin: [
+      process.env.FRONTEND_URL || 'http://localhost:3000',
+      'https://calenmate-bm6mgvm32-sinanulusans-projects.vercel.app',
+      'https://calenmate-git-main-sinanulusans-projects.vercel.app',
+      'https://calenmate-sinanulusans-projects.vercel.app',
+      /^https:\/\/calenmate.*\.vercel\.app$/, // Vercel preview URLs
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    credentials: true,
   });
 
   // Global validation pipe
