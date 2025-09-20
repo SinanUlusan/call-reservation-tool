@@ -17,7 +17,7 @@ async function bootstrap() {
 
   // Enable CORS for frontend integration
   app.enableCors({
-    git add .    origin: [
+    origin: [
       process.env.FRONTEND_URL || 'http://localhost:3000',
       'https://calenmate-bm6mgvm32-sinanulusans-projects.vercel.app',
       'https://calenmate-git-main-sinanulusans-projects.vercel.app',
