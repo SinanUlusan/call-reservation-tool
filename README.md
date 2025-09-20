@@ -1,101 +1,445 @@
-# CallReservationTool
+# Call Reservation Tool
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A comprehensive NestJS backend service for managing call reservations with admin controls and user notifications, similar to Calendly.com.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## 🚀 Features
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+- **Reservation Management**: Create, update, cancel, and track call reservations
+- **Time Slot Management**: 15-minute interval time slots with conflict prevention
+- **Admin Controls**: Accept/reject reservations with notification system
+- **Multi-channel Notifications**: Email, SMS, and push notifications
+- **Real-time Updates**: RabbitMQ integration for push notifications
+- **Comprehensive API**: RESTful API with Swagger documentation
+- **Database Integration**: TypeORM with SQLite (easily configurable for PostgreSQL/MySQL)
+- **Testing**: Unit and integration tests with Jest
+- **CI/CD**: GitHub Actions pipeline with automated testing and deployment
 
-## Run tasks
+## 📋 Requirements
 
-To run the dev server for your app, use:
+- Node.js 20+
+- npm or yarn
+- SQLite (included) or PostgreSQL/MySQL
+- RabbitMQ (for push notifications)
 
-```sh
-npx nx serve call-reservation-tool
+## 🚀 Quick Start
+
+### Option 1: Docker (Recommended)
+
+```bash
+# Clone and start with Docker
+git clone <repository-url>
+cd call-reservation-tool
+npm run docker:prod
+
+# Check if running
+curl http://localhost:3000/api
 ```
 
-To create a production bundle:
+### Option 2: Local Development
 
-```sh
-npx nx build call-reservation-tool
+```bash
+# Clone repository
+git clone <repository-url>
+cd call-reservation-tool
+
+# Install dependencies
+npm install
+
+# Setup database
+npm run migration:run
+
+# Start development server
+npm run start:dev
 ```
 
-To see all available targets to run for a project, run:
+## 🛠️ Installation
 
-```sh
-npx nx show project call-reservation-tool
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd call-reservation-tool
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Environment Configuration**
+
+   ```bash
+   cp apps/call-reservation-tool/config.env .env
+   # Edit .env with your configuration
+   ```
+
+4. **Database Setup (Migration)**
+
+   ```bash
+   # Run migrations
+   npm run migration:run
+
+   # Check migration status
+   npm run migration:show
+   ```
+
+5. **Run the application**
+
+   ```bash
+   # Development
+   npm run start:dev
+
+   # Production (Local)
+   npm run build:prod
+   npm run start:prod
+   ```
+
+## 🐳 Docker Deployment
+
+### Using Docker Compose (Recommended)
+
+```bash
+# Start all services (Production)
+npm run docker:prod
+
+# Start development environment
+npm run docker:dev
+
+# View logs
+npm run docker:logs
+
+# Stop services
+npm run docker:down
+
+# Inspect database
+npm run docker:inspect-db
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### Using Docker directly
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```bash
+# Build image
+npm run docker:build
 
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/nest:app demo
+# Run container
+docker run -p 3000:3000 call-reservation-tool
 ```
 
-To generate a new library, use:
+## 📋 Available Scripts
 
-```sh
-npx nx g @nx/node:lib mylib
+### Development
+
+```bash
+npm run start:dev          # Start development server
+npm run build              # Build application
+npm run test               # Run unit tests
+npm run test:e2e           # Run e2e tests
+npm run lint               # Lint code
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+### Production
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+```bash
+npm run build:prod         # Build for production
+npm run start:prod         # Start production server
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+### Database Migration
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+```bash
+npm run migration:generate # Generate new migration
+npm run migration:run      # Run migrations
+npm run migration:revert   # Revert last migration
+npm run migration:show     # Show migration status
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Docker
 
-## Install Nx Console
+```bash
+npm run docker:build       # Build Docker image
+npm run docker:dev         # Start development with Docker
+npm run docker:prod        # Start production with Docker
+npm run docker:down        # Stop Docker containers
+npm run docker:logs        # View Docker logs
+npm run docker:inspect-db  # Inspect database in Docker
+```
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+## 📚 API Documentation
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Once the application is running, visit:
 
-## Useful links
+- **API Base URL**: `http://localhost:3000/api`
+- **Swagger Documentation**: `http://localhost:3000/api/docs`
 
-Learn more:
+### Key Endpoints
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+#### Reservation Management
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- `POST /api/reservation` - Create a new reservation
+- `GET /api/reservation` - Get all reservations
+- `GET /api/reservation/:id` - Get a specific reservation
+- `PUT /api/reservation/:id/cancel` - Cancel a reservation
+- `PUT /api/reservation/:id/time` - Update reservation time
+- `PUT /api/reservation/:id/admin-action` - Admin accept/reject action
+
+#### Admin Operations
+
+- `GET /api/admin/reservations` - Get all reservations (admin view)
+- `GET /api/admin/reservations/pending` - Get pending reservations
+- `PUT /api/admin/send-reminders` - Send reminder notifications
+
+## 🏗️ Architecture
+
+### Project Structure
+
+```
+src/
+├── modules/
+│   ├── reservation/          # Reservation management
+│   │   ├── reservation.controller.ts
+│   │   ├── reservation.service.ts
+│   │   ├── reservation.module.ts
+│   │   └── *.spec.ts         # Tests
+│   └── admin/                # Admin operations
+│       ├── admin.controller.ts
+│       └── admin.module.ts
+├── shared/
+│   ├── entities/             # Database entities
+│   │   └── reservation.entity.ts
+│   ├── enums/               # Application enums
+│   │   └── reservation-status.enum.ts
+│   ├── interfaces/          # TypeScript interfaces
+│   │   └── reservation.interface.ts
+│   ├── dto/                 # Data Transfer Objects
+│   │   ├── create-reservation.dto.ts
+│   │   └── admin-action.dto.ts
+│   └── services/            # Shared services
+│       ├── email.service.ts
+│       ├── sms.service.ts
+│       └── push-notification.service.ts
+└── app/
+    ├── app.module.ts        # Main application module
+    ├── app.controller.ts    # Health check controller
+    └── main.ts             # Application entry point
+```
+
+### Database Schema
+
+#### Reservation Entity
+
+- `id`: UUID primary key
+- `startTime`: Call start time (HH:mm format)
+- `endTime`: Call end time (calculated)
+- `email`: User email address
+- `phone`: User phone number
+- `pushNotificationKey`: Push notification identifier
+- `receiveEmail`: Email notification preference
+- `receiveSmsNotification`: SMS notification preference
+- `receivePushNotification`: Push notification preference
+- `status`: Reservation status (QUEUED, ACCEPTED, SUCCESSFUL, CANCELLED, REJECTED)
+- `reservationDate`: Date of reservation
+- `createdTime`: Record creation timestamp
+- `updatedTime`: Record update timestamp
+
+### Notification System
+
+#### Email Notifications
+
+- **Cancellation**: Admin notified when user cancels
+- **Rejection**: User notified when admin rejects
+- **Reminders**: 10 minutes before call (if enabled)
+
+#### SMS Notifications
+
+- **Reminders**: 5 minutes before call (if enabled)
+
+#### Push Notifications
+
+- **Reminders**: 1 minute before call (if enabled)
+- **Real-time**: Via RabbitMQ message queue
+
+## 🗄️ Database Migration
+
+### Migration Commands
+
+```bash
+# Generate new migration (after entity changes)
+npm run migration:generate -- -n MigrationName
+
+# Run migrations
+npm run migration:run
+
+# Revert last migration
+npm run migration:revert
+
+# Show migration status
+npm run migration:show
+```
+
+### Migration Workflow
+
+1. **Make entity changes** in `src/shared/entities/`
+2. **Generate migration**:
+   ```bash
+   npm run migration:generate -- -n AddNewField
+   ```
+3. **Review migration file** in `src/migrations/`
+4. **Run migration**:
+   ```bash
+   npm run migration:run
+   ```
+
+### Production Migration
+
+- **Development**: `synchronize: true` (automatic schema updates)
+- **Production**: `synchronize: false` + `migrationsRun: true` (safe schema management)
+- **Docker**: Migrations run automatically on container start
+
+## 🧪 Testing
+
+### Running Tests
+
+```bash
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+
+# Lint code
+npm run lint
+```
+
+### Test Structure
+
+- **Unit Tests**: Service and controller logic
+- **Integration Tests**: API endpoints and database operations
+- **E2E Tests**: Full application workflow
+
+## 🔧 Configuration
+
+### Environment Variables
+
+```bash
+# Application
+NODE_ENV=development
+PORT=3000
+
+# Database
+DATABASE_PATH=reservations.db
+
+# RabbitMQ
+RABBITMQ_URL=amqp://localhost:5672
+
+# CORS
+FRONTEND_URL=http://localhost:3000
+
+# Admin
+ADMIN_EMAIL=admin@example.com
+```
+
+### Database Configuration
+
+The application uses SQLite by default but can be easily configured for other databases:
+
+```typescript
+// PostgreSQL example
+TypeOrmModule.forRoot({
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: 'postgres',
+  password: 'password',
+  database: 'reservations',
+  entities: [Reservation],
+  synchronize: true,
+});
+```
+
+## 🚀 Deployment
+
+### Production Considerations
+
+1. **Database**: Use PostgreSQL or MySQL for production
+2. **Environment Variables**: Set all required environment variables
+3. **Security**: Enable HTTPS and proper CORS configuration
+4. **Monitoring**: Add logging and monitoring solutions
+5. **Scaling**: Consider horizontal scaling with load balancers
+
+### CI/CD Pipeline
+
+The GitHub Actions pipeline includes:
+
+- **Testing**: Unit, integration, and e2e tests
+- **Security**: Dependency audit and security scanning
+- **Building**: Application build and artifact creation
+- **Deployment**: Automated deployment to staging/production
+
+## 📝 API Examples
+
+### Create Reservation
+
+```bash
+curl -X POST http://localhost:3000/api/reservation \
+  -H "Content-Type: application/json" \
+  -d '{
+    "startTime": "13:15",
+    "email": "user@example.com",
+    "phone": "+1234567890",
+    "pushNotificationKey": "user-push-key-123",
+    "receiveEmail": true,
+    "receiveSmsNotification": true,
+    "receivePushNotification": true
+  }'
+```
+
+### Cancel Reservation
+
+```bash
+curl -X PUT http://localhost:3000/api/reservation/{id}/cancel \
+  -H "Content-Type: application/json" \
+  -d '{
+    "adminEmail": "admin@example.com"
+  }'
+```
+
+### Admin Action
+
+```bash
+curl -X PUT http://localhost:3000/api/reservation/{id}/admin-action \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "accept",
+    "adminEmail": "admin@example.com"
+  }'
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Follow TypeScript best practices
+- Write comprehensive tests
+- Use conventional commits
+- Update documentation as needed
+- Follow the existing code style
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+For support and questions:
+
+- Create an issue in the repository
+- Check the API documentation at `/api/docs`
+- Review the test files for usage examples
+
