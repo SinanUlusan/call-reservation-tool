@@ -84,14 +84,14 @@ async function bootstrap() {
     next();
   });
 
-  // Global validation pipe - temporarily disabled for debugging
-  // app.useGlobalPipes(
-  //   new ValidationPipe({
-  //     whitelist: true,
-  //     forbidNonWhitelisted: true,
-  //     transform: true,
-  //   })
-  // );
+  // Global validation pipe
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    })
+  );
 
   // Swagger documentation setup
   const config = new DocumentBuilder()

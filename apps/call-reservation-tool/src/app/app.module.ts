@@ -16,7 +16,7 @@ import { Reservation } from '../shared/entities/reservation.entity';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'sqlite',
-        database: configService.get('DATABASE_PATH', 'reservations.db'),
+        database: configService.get('DATABASE_PATH', './reservations.db'),
         entities: [Reservation],
         synchronize: true, // Auto-create tables
         logging: false, // Disable logging

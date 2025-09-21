@@ -41,3 +41,9 @@ Thumbs.db
 .nx/cache
 .nx/workspace-data
 .github/instructions/nx.instructions.md
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+reservations.db
