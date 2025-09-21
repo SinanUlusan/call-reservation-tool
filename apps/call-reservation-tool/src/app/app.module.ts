@@ -20,9 +20,7 @@ import { Reservation } from '../shared/entities/reservation.entity';
         entities: [Reservation],
         migrations: ['migrations/*.js'],
         migrationsRun: configService.get('NODE_ENV') === 'production',
-        synchronize:
-          configService.get('NODE_ENV') !== 'production' ||
-          configService.get('TYPEORM_SYNCHRONIZE') === 'true', // Enable in development or when explicitly set
+        synchronize: true,
         logging: configService.get('NODE_ENV') === 'development',
       }),
       inject: [ConfigService],
