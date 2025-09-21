@@ -45,8 +45,8 @@ EXPOSE 3000
 
 ENV PORT=3000
 ENV NODE_ENV=production
-ENV DATABASE_PATH=/app/data/reservations.db
-ENV TYPEORM_SYNCHRONIZE=false
+ENV DATABASE_PATH=./reservations.db
+ENV TYPEORM_SYNCHRONIZE=true
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
