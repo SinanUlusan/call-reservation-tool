@@ -109,15 +109,20 @@ async function bootstrap() {
   });
 
   const port = process.env.PORT || 3000;
-  await app.listen(port);
+
+  Logger.log(`🔧 Starting application on port: ${port}`);
+  Logger.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
+  Logger.log(`🔧 Database path: ${process.env.DATABASE_PATH || 'default'}`);
+  Logger.log(`🔧 Frontend URL: ${process.env.FRONTEND_URL || 'not set'}`);
+
+  await app.listen(port, '0.0.0.0');
 
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Application is running on: http://0.0.0.0:${port}/${globalPrefix}`
   );
   Logger.log(
-    `📚 API Documentation available at: http://localhost:${port}/${globalPrefix}/docs`
+    `📚 API Documentation available at: http://0.0.0.0:${port}/${globalPrefix}/docs`
   );
-  Logger.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
 }
 
 bootstrap().catch((error) => {
