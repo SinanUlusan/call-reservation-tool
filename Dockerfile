@@ -50,11 +50,4 @@ ENV TYPEORM_SYNCHRONIZE=false
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/api', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
 
-# Create startup script to run migrations and start app
-RUN echo '#!/bin/sh\n\
-echo "Running database migrations..."\n\
-npx typeorm migration:run -d /app/dist/apps/call-reservation-tool/data-source.js || echo "Migration failed, continuing..."\n\
-echo "Starting application..."\n\
-node dist/apps/call-reservation-tool/main.js' > /app/start.sh && chmod +x /app/start.sh
-
-CMD ["/app/start.sh"]
+CMD ["node", "dist/apps/call-reservation-tool/main.js"]
