@@ -115,6 +115,12 @@ async function bootstrap() {
   Logger.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
   Logger.log(`🔧 Database path: ${process.env.DATABASE_PATH || 'default'}`);
   Logger.log(`🔧 Frontend URL: ${process.env.FRONTEND_URL || 'not set'}`);
+  Logger.log(`🔧 All env vars:`, {
+    NODE_ENV: process.env.NODE_ENV,
+    DATABASE_PATH: process.env.DATABASE_PATH,
+    TYPEORM_SYNCHRONIZE: process.env.TYPEORM_SYNCHRONIZE,
+    FRONTEND_URL: process.env.FRONTEND_URL,
+  });
 
   await app.listen(port, '0.0.0.0');
 
