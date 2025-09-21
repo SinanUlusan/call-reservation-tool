@@ -33,8 +33,10 @@ async function bootstrap() {
             'https://calenmate-bm6mgvm32-sinanulusans-projects.vercel.app',
             'https://calenmate-git-main-sinanulusans-projects.vercel.app',
             'https://calenmate-sinanulusans-projects.vercel.app',
+            'https://call-reservation-tool-production.up.railway.app', // Railway Swagger
             /^https:\/\/calenmate.*\.vercel\.app$/, // Vercel preview URLs
             /^https:\/\/.*\.vercel\.app$/, // All Vercel apps
+            /^https:\/\/.*\.railway\.app$/, // All Railway apps
           ];
 
           // Check if origin is allowed
