@@ -17,9 +17,10 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the application and copy data source
+# Build the application and copy necessary files
 RUN npx nx build call-reservation-tool --prod
 COPY apps/call-reservation-tool/src/data-source.ts apps/call-reservation-tool/src/data-source.ts
+COPY apps/call-reservation-tool/src/migrations ./migrations
 
 # Production image, copy all the files and run nest
 FROM base AS runner
@@ -29,8 +30,9 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nestjs
 
-# Copy built application
+# Copy built application and migrations
 COPY --from=builder --chown=nestjs:nodejs /app/dist ./dist
+COPY --from=builder --chown=nestjs:nodejs /app/migrations ./migrations
 COPY --from=deps --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=deps --chown=nestjs:nodejs /app/package.json ./package.json
 

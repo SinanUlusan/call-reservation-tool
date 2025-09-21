@@ -18,7 +18,7 @@ import { Reservation } from '../shared/entities/reservation.entity';
         type: 'sqlite',
         database: configService.get('DATABASE_PATH', 'reservations.db'),
         entities: [Reservation],
-        migrations: ['dist/apps/call-reservation-tool/migrations/*.js'],
+        migrations: ['migrations/*.js'],
         migrationsRun: configService.get('NODE_ENV') === 'production',
         synchronize:
           configService.get('NODE_ENV') !== 'production' ||

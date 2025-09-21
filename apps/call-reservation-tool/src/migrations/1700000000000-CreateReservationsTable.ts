@@ -14,8 +14,7 @@ export class CreateReservationsTable1700000000000
             name: 'id',
             type: 'varchar',
             isPrimary: true,
-            generationStrategy: 'uuid',
-            default: 'uuid_generate_v4()',
+            length: '36',
           },
           {
             name: 'startTime',
