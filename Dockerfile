@@ -34,7 +34,7 @@ COPY --from=deps --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=deps --chown=nestjs:nodejs /app/package.json ./package.json
 
 # Create data directory for SQLite
-RUN mkdir -p /app/data && chown nestjs:nodejs /app/data
+RUN mkdir -p /app/data && chown -R nestjs:nodejs /app/data
 
 USER nestjs
 
@@ -42,7 +42,7 @@ EXPOSE 3000
 
 ENV PORT=3000
 ENV NODE_ENV=production
-ENV DATABASE_PATH=/app/data/reservations.db
+ENV DATABASE_PATH=reservations.db
 ENV TYPEORM_SYNCHRONIZE=false
 
 # Health check
