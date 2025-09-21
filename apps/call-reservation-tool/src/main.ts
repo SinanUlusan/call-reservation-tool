@@ -17,60 +17,64 @@ async function bootstrap() {
 
   // Enable CORS for frontend integration
   const isDevelopment = process.env.NODE_ENV !== 'production';
-  
+
   const corsOptions = {
-    origin: isDevelopment ? true : function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      
-      const allowedOrigins = [
-        process.env.FRONTEND_URL || 'http://localhost:3000',
-        'http://localhost:3000',
-        'http://localhost:3001',
-        'https://calenmate-bm6mgvm32-sinanulusans-projects.vercel.app',
-        'https://calenmate-git-main-sinanulusans-projects.vercel.app',
-        'https://calenmate-sinanulusans-projects.vercel.app',
-        /^https:\/\/calenmate.*\.vercel\.app$/, // Vercel preview URLs
-        /^https:\/\/.*\.vercel\.app$/, // All Vercel apps
-      ];
-      
-      // Check if origin is allowed
-      const isAllowed = allowedOrigins.some(allowedOrigin => {
-        if (typeof allowedOrigin === 'string') {
-          return origin === allowedOrigin;
-        } else if (allowedOrigin instanceof RegExp) {
-          return allowedOrigin.test(origin);
-        }
-        return false;
-      });
-      
-      if (isAllowed) {
-        callback(null, true);
-      } else {
-        console.log('CORS blocked origin:', origin);
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: isDevelopment
+      ? true
+      : function (origin, callback) {
+          // Allow requests with no origin (like mobile apps or curl requests)
+          if (!origin) return callback(null, true);
+
+          const allowedOrigins = [
+            process.env.FRONTEND_URL || 'http://localhost:3000',
+            'http://localhost:3000',
+            'http://localhost:3001',
+            'https://calenmate-bm6mgvm32-sinanulusans-projects.vercel.app',
+            'https://calenmate-git-main-sinanulusans-projects.vercel.app',
+            'https://calenmate-sinanulusans-projects.vercel.app',
+            /^https:\/\/calenmate.*\.vercel\.app$/, // Vercel preview URLs
+            /^https:\/\/.*\.vercel\.app$/, // All Vercel apps
+          ];
+
+          // Check if origin is allowed
+          const isAllowed = allowedOrigins.some((allowedOrigin) => {
+            if (typeof allowedOrigin === 'string') {
+              return origin === allowedOrigin;
+            } else if (allowedOrigin instanceof RegExp) {
+              return allowedOrigin.test(origin);
+            }
+            return false;
+          });
+
+          if (isAllowed) {
+            callback(null, true);
+          } else {
+            console.log('CORS blocked origin:', origin);
+            callback(new Error('Not allowed by CORS'));
+          }
+        },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: [
-      'Content-Type', 
-      'Authorization', 
+      'Content-Type',
+      'Authorization',
       'X-Requested-With',
       'Accept',
       'Origin',
       'Access-Control-Request-Method',
-      'Access-Control-Request-Headers'
+      'Access-Control-Request-Headers',
     ],
     credentials: true,
     preflightContinue: false,
-    optionsSuccessStatus: 204
+    optionsSuccessStatus: 204,
   };
-  
+
   app.enableCors(corsOptions);
-  
+
   // Log CORS configuration
-  Logger.log(`🔧 CORS enabled for ${isDevelopment ? 'development' : 'production'} mode`);
-  
+  Logger.log(
+    `🔧 CORS enabled for ${isDevelopment ? 'development' : 'production'} mode`
+  );
+
   // Add CORS debugging middleware
   app.use((req, res, next) => {
     Logger.log(`🌐 Request from origin: ${req.headers.origin || 'no-origin'}`);
