@@ -16,7 +16,7 @@
         "PORT": "3000",
         "DATABASE_PATH": "./reservations.db",
         "TYPEORM_SYNCHRONIZE": "true",
-        "FRONTEND_URL": "https://calenmate.vercel.app",
+        "FRONTEND_URL": "https://calenmate.netlify.app",
         "ADMIN_EMAIL": "admin@example.com"
       }
     }

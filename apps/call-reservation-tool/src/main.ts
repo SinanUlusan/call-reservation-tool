@@ -30,6 +30,7 @@ async function bootstrap() {
             'http://localhost:3000',
             'http://localhost:3001',
             'https://calenmate.vercel.app',
+            'https://calenmate.netlify.app',
             'https://calenmate-bm6mgvm32-sinanulusans-projects.vercel.app',
             'https://calenmate-git-main-sinanulusans-projects.vercel.app',
             'https://calenmate-sinanulusans-projects.vercel.app',
