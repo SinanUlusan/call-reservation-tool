@@ -53,7 +53,6 @@ async function bootstrap() {
           if (isAllowed) {
             callback(null, true);
           } else {
-            console.log('CORS blocked origin:', origin);
             callback(new Error('Not allowed by CORS'));
           }
         },
@@ -74,16 +73,8 @@ async function bootstrap() {
 
   app.enableCors(corsOptions);
 
-  // Log CORS configuration
-  Logger.log(
-    `🔧 CORS enabled for ${isDevelopment ? 'development' : 'production'} mode`
-  );
-
   // Add CORS debugging middleware
   app.use((req, res, next) => {
-    Logger.log(`🌐 Request from origin: ${req.headers.origin || 'no-origin'}`);
-    Logger.log(`🌐 Request method: ${req.method}`);
-    Logger.log(`🌐 Request path: ${req.path}`);
     next();
   });
 
@@ -114,25 +105,7 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3000;
 
-  Logger.log(`🔧 Starting application on port: ${port}`);
-  Logger.log(`🔧 Environment: ${process.env.NODE_ENV || 'development'}`);
-  Logger.log(`🔧 Database path: ${process.env.DATABASE_PATH || 'default'}`);
-  Logger.log(`🔧 Frontend URL: ${process.env.FRONTEND_URL || 'not set'}`);
-  Logger.log(`🔧 All env vars:`, {
-    NODE_ENV: process.env.NODE_ENV,
-    DATABASE_PATH: process.env.DATABASE_PATH,
-    TYPEORM_SYNCHRONIZE: process.env.TYPEORM_SYNCHRONIZE,
-    FRONTEND_URL: process.env.FRONTEND_URL,
-  });
-
   await app.listen(port, '0.0.0.0');
-
-  Logger.log(
-    `🚀 Application is running on: http://0.0.0.0:${port}/${globalPrefix}`
-  );
-  Logger.log(
-    `📚 API Documentation available at: http://0.0.0.0:${port}/${globalPrefix}/docs`
-  );
 }
 
 bootstrap().catch((error) => {
