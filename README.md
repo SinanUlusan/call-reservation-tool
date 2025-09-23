@@ -2,6 +2,16 @@
 
 A comprehensive NestJS backend service for managing call reservations with admin controls and user notifications, similar to Calendly.com.
 
+## 🌐 Live Demo
+
+**🎯 Test the Application**: [https://calenmate.netlify.app/](https://calenmate.netlify.app/)
+
+The application is deployed with:
+
+- **Backend**: Railway (NestJS API)
+- **Frontend**: Netlify (React + Vite UI)
+- **API Documentation**: [https://call-reservation-tool-production.up.railway.app/api/docs#/](https://call-reservation-tool-production.up.railway.app/api/docs#/)
+
 ## 🚀 Features
 
 - **Reservation Management**: Create, update, cancel, and track call reservations
@@ -13,6 +23,7 @@ A comprehensive NestJS backend service for managing call reservations with admin
 - **Database Integration**: TypeORM with SQLite (easily configurable for PostgreSQL/MySQL)
 - **Testing**: Unit and integration tests with Jest
 - **CI/CD**: GitHub Actions pipeline with automated testing and deployment
+- **Live Deployment**: Backend on Railway, Frontend on Netlify
 
 ## 📋 Requirements
 
@@ -23,11 +34,15 @@ A comprehensive NestJS backend service for managing call reservations with admin
 
 ## 🚀 Quick Start
 
-### Option 1: Docker (Recommended)
+### Option 1: Test Live Application (Recommended)
+
+Visit the live application at [https://calenmate.netlify.app/](https://calenmate.netlify.app/) to test all features without local setup.
+
+### Option 2: Docker (Local Development)
 
 ```bash
 # Clone and start with Docker
-git clone <repository-url>
+git clone https://github.com/SinanUlusan/call-reservation-tool.git
 cd call-reservation-tool
 npm run docker:prod
 
@@ -35,11 +50,11 @@ npm run docker:prod
 curl http://localhost:3000/api
 ```
 
-### Option 2: Local Development
+### Option 3: Local Development
 
 ```bash
 # Clone repository
-git clone <repository-url>
+git clone https://github.com/SinanUlusan/call-reservation-tool.git
 cd call-reservation-tool
 
 # Install dependencies
@@ -57,7 +72,7 @@ npm run start:dev
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/SinanUlusan/call-reservation-tool.git
    cd call-reservation-tool
    ```
 
@@ -167,7 +182,14 @@ npm run docker:inspect-db  # Inspect database in Docker
 
 ## 📚 API Documentation
 
-Once the application is running, visit:
+### Live API (Railway Deployment)
+
+- **API Base URL**: `https://call-reservation-tool-production.up.railway.app/api`
+- **Swagger Documentation**: `https://call-reservation-tool-production.up.railway.app/api/docs#/`
+
+### Local Development
+
+Once the application is running locally, visit:
 
 - **API Base URL**: `http://localhost:3000/api`
 - **Swagger Documentation**: `http://localhost:3000/api/docs`
@@ -359,13 +381,20 @@ TypeOrmModule.forRoot({
 
 ## 🚀 Deployment
 
+### Current Deployment
+
+- **Backend**: Deployed on [Railway](https://railway.app/) at `https://call-reservation-tool-production.up.railway.app`
+- **Frontend**: Deployed on [Netlify](https://netlify.com/) at `https://calenmate.netlify.app/`
+- **Database**: PostgreSQL on Railway
+- **CI/CD**: GitHub Actions with automated deployment
+
 ### Production Considerations
 
-1. **Database**: Use PostgreSQL or MySQL for production
+1. **Database**: PostgreSQL on Railway for production
 2. **Environment Variables**: Set all required environment variables
-3. **Security**: Enable HTTPS and proper CORS configuration
-4. **Monitoring**: Add logging and monitoring solutions
-5. **Scaling**: Consider horizontal scaling with load balancers
+3. **Security**: HTTPS enabled and proper CORS configuration
+4. **Monitoring**: Railway provides built-in monitoring and logging
+5. **Scaling**: Railway handles automatic scaling
 
 ### CI/CD Pipeline
 
@@ -374,11 +403,27 @@ The GitHub Actions pipeline includes:
 - **Testing**: Unit, integration, and e2e tests
 - **Security**: Dependency audit and security scanning
 - **Building**: Application build and artifact creation
-- **Deployment**: Automated deployment to staging/production
+- **Deployment**: Automated deployment to Railway
 
 ## 📝 API Examples
 
-### Create Reservation
+### Create Reservation (Live API)
+
+```bash
+curl -X POST https://call-reservation-tool-production.up.railway.app/api/reservation \
+  -H "Content-Type: application/json" \
+  -d '{
+    "startTime": "13:15",
+    "email": "user@example.com",
+    "phone": "+1234567890",
+    "pushNotificationKey": "user-push-key-123",
+    "receiveEmail": true,
+    "receiveSmsNotification": true,
+    "receivePushNotification": true
+  }'
+```
+
+### Create Reservation (Local)
 
 ```bash
 curl -X POST http://localhost:3000/api/reservation \
@@ -394,20 +439,20 @@ curl -X POST http://localhost:3000/api/reservation \
   }'
 ```
 
-### Cancel Reservation
+### Cancel Reservation (Live API)
 
 ```bash
-curl -X PUT http://localhost:3000/api/reservation/{id}/cancel \
+curl -X PUT https://call-reservation-tool-production.up.railway.app/api/reservation/{id}/cancel \
   -H "Content-Type: application/json" \
   -d '{
     "adminEmail": "admin@example.com"
   }'
 ```
 
-### Admin Action
+### Admin Action (Live API)
 
 ```bash
-curl -X PUT http://localhost:3000/api/reservation/{id}/admin-action \
+curl -X PUT https://call-reservation-tool-production.up.railway.app/api/reservation/{id}/admin-action \
   -H "Content-Type: application/json" \
   -d '{
     "action": "accept",
@@ -442,4 +487,3 @@ For support and questions:
 - Create an issue in the repository
 - Check the API documentation at `/api/docs`
 - Review the test files for usage examples
-
